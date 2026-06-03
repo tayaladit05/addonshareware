@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "npm --prefix addonShareware run dev",
     "build": "npm --prefix addonShareware run build",
-    "preview": "npm --prefix addonShareware run preview",
+    "start": "npm --prefix addonShareware run start",
     "install:app": "npm --prefix addonShareware install"
   }
 }
