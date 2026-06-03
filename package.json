@@ -1,0 +1,10 @@
+{
+  "name": "addonshareware-workspace",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix butterSTACK run dev",
+    "build": "npm --prefix butterSTACK run build",
+    "preview": "npm --prefix butterSTACK run preview",
+    "install:app": "npm --prefix butterSTACK install"
+  }
+}
