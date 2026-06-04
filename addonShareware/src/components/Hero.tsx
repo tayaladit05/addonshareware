@@ -25,7 +25,7 @@ export default function Hero() {
                 src="/logo.png" 
                 alt="addonSHAREWARE logo" 
                 width={170} 
-                height={50} 
+                height={90} 
                 className="agency-logo-img" 
                 priority
               />

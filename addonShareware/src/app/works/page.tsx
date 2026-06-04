@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import WorksClient from './WorksClient'
 
 export const metadata: Metadata = {
@@ -16,5 +18,11 @@ export const metadata: Metadata = {
 }
 
 export default function WorksPage() {
-  return <WorksClient />
+  return (
+    <>
+      <Navbar />
+      <WorksClient />
+      <Footer />
+    </>
+  )
 }

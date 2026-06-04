@@ -117,20 +117,8 @@ export default function Contact() {
               </div>
             </div>
             <div className="form-group">
-              <label>Service you need</label>
-              <select name="service" value={form.service} onChange={handleChange}>
-                <option value="">Select a service</option>
-                <option>Website Development</option>
-                <option>App Development</option>
-                <option>ERP & Software Solutions</option>
-                <option>Cloud Computing & DevOps</option>
-                <option>UI/UX & Graphic Design</option>
-                <option>Other</option>
-              </select>
-            </div>
-            <div className="form-group">
               <label>Your Message</label>
-              <textarea name="message" rows={5} placeholder="Tell us about your project..." value={form.message} onChange={handleChange} required />
+              <textarea name="message" rows={5} placeholder="Tell us how we may help..." value={form.message} onChange={handleChange} required />
             </div>
             <button type="submit" className="btn-dark btn-full" disabled={loading}>
               {loading ? <><i className="fas fa-spinner fa-spin" /> Sending...</> : <>Send Message <i className="fas fa-paper-plane" /></>}

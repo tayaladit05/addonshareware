@@ -106,7 +106,7 @@ export default function BlogPage() {
                       <span className="works-card-industry">{post.date}</span>
                     </div>
                     <h3 className="works-card-title" style={{ fontSize: '22px', lineHeight: '1.25', marginBottom: '12px' }}>{post.title}</h3>
-                    <p className="works-card-summary" style={{ fontSize: '14px', lineHeight: '1.7', color: 'rgba(255,255,255,0.5)' }}>{post.summary}</p>
+                    <p className="works-card-summary" style={{ fontSize: '14px', lineHeight: '1.7' }}>{post.summary}</p>
                   </div>
                 </div>
               ))}

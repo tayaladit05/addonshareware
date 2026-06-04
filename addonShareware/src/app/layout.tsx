@@ -55,10 +55,24 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var theme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+              })()
+            `,
+          }}
+        />
       </head>
       <body className={`${plusJakarta.variable} ${inter.variable}`}>
         <AnimateObserver />
         {children}
+        <a href="tel:+919311435804" className="floating-phone-widget">
+          <i className="fas fa-phone-alt floating-phone-icon" />
+          <span>+91 9311435804</span>
+        </a>
       </body>
     </html>
   )

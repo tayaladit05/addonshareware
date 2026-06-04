@@ -17,21 +17,6 @@ export default function ContactPage() {
       <Navbar />
       <div style={{ paddingTop: 'var(--nav-h)' }}>
         {/* Themed Header Banner */}
-        <header className="works-header" style={{ padding: '60px 0 40px' }}>
-          <div className="grid-bg-dark" />
-          <div className="container works-header-inner">
-            <div className="works-hero-text">
-              <p className="section-label">Get In Touch</p>
-              <h1 className="works-big-title">
-                Start a<br /><strong>Conversation</strong>
-              </h1>
-              <p className="section-sub light" style={{ margin: '0' }}>
-                We respond within 24 hours to help map your software specifications.
-              </p>
-            </div>
-          </div>
-        </header>
-
         <Contact />
       </div>
       <Footer />

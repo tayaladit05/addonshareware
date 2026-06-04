@@ -213,9 +213,6 @@ export default function WorksClient() {
       <header className="works-header">
         <div className="grid-bg-dark" />
         <div className="container works-header-inner">
-          <Link href="/" className="works-back">
-            <i className="fas fa-arrow-left" /> Back to home
-          </Link>
           <div className="works-hero-text">
             <p className="section-label">Our portfolio</p>
             <h1 className="works-big-title">
@@ -226,7 +223,7 @@ export default function WorksClient() {
             </p>
           </div>
           <div className="works-header-stat-row">
-            {[['100+', 'Projects'], ['50+', 'Clients'], ['8+', 'Years']].map(([n, l]) => (
+            {[['250+', 'Projects'], ['1500+', 'Clients'], ['12+', 'Years']].map(([n, l]) => (
               <div key={l} className="works-header-stat">
                 <span className="works-stat-num">{n}</span>
                 <span className="works-stat-label">{l}</span>

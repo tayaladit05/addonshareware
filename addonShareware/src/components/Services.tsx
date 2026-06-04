@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const services = [
   {
@@ -109,6 +109,7 @@ function ErpIllustration() {
   )
 }
 
+// ─── CloudIllustration ───
 function CloudIllustration() {
   return (
     <svg className="svc-illustration-svg" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -128,6 +129,7 @@ function CloudIllustration() {
   )
 }
 
+// ─── DesignIllustration ───
 function DesignIllustration() {
   return (
     <svg className="svc-illustration-svg" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,6 +166,39 @@ function ServiceIllustration({ type }: { type: string }) {
 
 export default function Services() {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const [stacked, setStacked] = useState<boolean[]>([false, false, false, false, false])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const cards = cardsRef.current
+      const newStacked = [false, false, false, false, false]
+      
+      cards.forEach((card, index) => {
+        if (!card) return
+        
+        // Stacking trigger using the new 80px offset height
+        if (index < cards.length - 1) {
+          const nextCard = cards[index + 1]
+          if (nextCard) {
+            const nextRect = nextCard.getBoundingClientRect()
+            const nextStickyThreshold = 110 + (index + 1) * 80
+            if (nextRect.top <= nextStickyThreshold + 8) {
+              newStacked[index] = true
+            }
+          }
+        }
+      })
+      
+      setStacked(newStacked)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent, index: number) => {
@@ -221,25 +256,34 @@ export default function Services() {
             <div
               key={svc.title}
               ref={(el) => { cardsRef.current[i] = el }}
-              className="service-stack-card"
-              style={{ top: `calc(110px + ${i * 24}px)` }}
+              className={`service-stack-card ${stacked[i] ? 'is-stacked' : ''}`}
+              style={{ top: `calc(110px + ${i * 80}px)` }}
             >
-              {/* Left Column: Animated SVGs */}
-              <div className="service-card-left">
-                <ServiceIllustration type={svc.title} />
+              {/* Header Bar: remains visible when overlapped */}
+              <div className="service-card-header-bar">
+                <div className="service-card-header-left">
+                  <span className="service-card-step">0{i + 1} / 05</span>
+                  <h3 className="service-card-title">{svc.title}</h3>
+                </div>
               </div>
 
-              {/* Right Column: Text & Capabilities list */}
-              <div className="service-card-right">
-                <div className="service-card-step">0{i + 1} / 05</div>
-                <h3 className="service-card-title">{svc.title}</h3>
-                <p className="service-card-desc">{svc.desc}</p>
-                <div className="service-card-divider" />
-                <ul className="service-card-bullets">
-                  {svc.list.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+              {/* Body Content: Fades out smoothly when card is overlapped */}
+              <div className="service-card-content-body">
+                {/* Left Column: Animated SVGs */}
+                <div className="service-card-left">
+                  <ServiceIllustration type={svc.title} />
+                </div>
+
+                {/* Right Column: Text & Capabilities list */}
+                <div className="service-card-right">
+                  <p className="service-card-desc">{svc.desc}</p>
+                  <div className="service-card-divider" />
+                  <ul className="service-card-bullets">
+                    {svc.list.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           ))}
