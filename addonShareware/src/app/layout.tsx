@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import '@/index.css'
 import AnimateObserver from '@/components/AnimateObserver'
+import GlobalMouseGlow from '@/components/GlobalMouseGlow'
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     ],
     locale: 'en_US',
     type: 'website',
-  },
+    },
   twitter: {
     card: 'summary_large_image',
     title: 'Addon Shareware — Web, App & Software Development Agency',
@@ -52,15 +53,20 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                var theme = localStorage.getItem('theme') || 'dark';
-                document.documentElement.setAttribute('data-theme', theme);
+                var saved = localStorage.getItem('theme');
+                if (saved) {
+                  document.documentElement.setAttribute('data-theme', saved);
+                } else {
+                  var systemTheme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+                  document.documentElement.setAttribute('data-theme', systemTheme);
+                }
               })()
             `,
           }}
@@ -68,6 +74,7 @@ export default function RootLayout({
       </head>
       <body className={`${plusJakarta.variable} ${inter.variable}`}>
         <AnimateObserver />
+        <GlobalMouseGlow />
         {children}
         <a href="tel:+919311435804" className="floating-phone-widget">
           <i className="fas fa-phone-alt floating-phone-icon" />

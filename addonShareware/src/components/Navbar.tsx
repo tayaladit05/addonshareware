@@ -23,6 +23,30 @@ export default function Navbar() {
       setTheme('dark')
       document.documentElement.setAttribute('data-theme', 'dark')
     }
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)')
+    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
+      const currentSaved = localStorage.getItem('theme')
+      if (!currentSaved) {
+        const newTheme = e.matches ? 'light' : 'dark'
+        setTheme(newTheme)
+        document.documentElement.setAttribute('data-theme', newTheme)
+      }
+    }
+
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleSystemThemeChange)
+    } else if ((mediaQuery as any).addListener) {
+      ;(mediaQuery as any).addListener(handleSystemThemeChange)
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', handleSystemThemeChange)
+      } else if ((mediaQuery as any).removeListener) {
+        ;(mediaQuery as any).removeListener(handleSystemThemeChange)
+      }
+    }
   }, [])
 
   const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {

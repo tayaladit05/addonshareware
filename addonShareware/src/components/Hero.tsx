@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 export default function Hero() {
   const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0) // 0: Blank, 1: Drawing Logo, 2: Revealing Page, 3: Staggering Content, 4: Done
+  const heroRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Prevent scrolling while preloading
@@ -36,6 +37,29 @@ export default function Hero() {
     }
   }, [])
 
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const hero = heroRef.current
+      if (!hero) return
+      const rect = hero.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+      hero.style.setProperty('--mouse-x', `${x}px`)
+      hero.style.setProperty('--mouse-y', `${y}px`)
+    }
+
+    const hero = heroRef.current
+    if (hero) {
+      hero.addEventListener('mousemove', handleMouseMove)
+    }
+
+    return () => {
+      if (hero) {
+        hero.removeEventListener('mousemove', handleMouseMove)
+      }
+    }
+  }, [stage])
+
   const smoothTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault()
     const el = document.querySelector(id)
@@ -52,8 +76,9 @@ export default function Hero() {
       )}
 
       {/* ── HERO SECTION ── */}
-      <section className={`hero-new stage-${stage}`} id="home">
+      <section className={`hero-new stage-${stage}`} id="home" ref={heroRef}>
         <div className="hero-bg-dots" />
+        <div className="hero-mouse-glow" />
         <div className="hero-orb hero-orb-1" />
         <div className="hero-orb hero-orb-2" />
 

@@ -1,7 +1,8 @@
 {
-  "/services/page": "app/services/page.js",
-  "/works/credvisor/page": "app/works/credvisor/page.js",
   "/page": "app/page.js",
   "/works/page": "app/works/page.js",
-  "/team/page": "app/team/page.js"
+  "/services/page": "app/services/page.js",
+  "/team/page": "app/team/page.js",
+  "/about/page": "app/about/page.js",
+  "/blog/page": "app/blog/page.js"
 }
