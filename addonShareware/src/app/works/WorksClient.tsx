@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import Link from 'next/link'
 
 interface WorkItem {
@@ -188,8 +188,17 @@ function WorksSlideshow({ slides, fallbackGradient, logo, logoColor, year, portr
 export default function WorksClient() {
   const [active, setActive] = useState('All')
   const [visible, setVisible] = useState<string[]>([])
+  const [hoveredId, setHoveredId] = useState<string | null>(null)
 
-  const filtered = active === 'All' ? works : works.filter((w) => w.category === active)
+  const filtered = useMemo(() => {
+    return active === 'All' ? works : works.filter((w) => w.category === active)
+  }, [active])
+
+  // Distribute filtered items into 3 columns for staggered masonry layout
+  const columns: WorkItem[][] = [[], [], []]
+  filtered.forEach((w, index) => {
+    columns[index % 3].push(w)
+  })
 
   useEffect(() => {
     setVisible([])
@@ -251,39 +260,69 @@ export default function WorksClient() {
       {/* Grid */}
       <div className="works-grid-section">
         <div className="container">
-          <div className="works-grid">
-            {filtered.map((w) => (
-              <div
-                key={w.id}
-                className={`works-card${visible.includes(w.id) ? ' visible' : ''}`}
-              >
-                {/* Cover */}
-                <WorksSlideshow
-                  slides={w.slides}
-                  fallbackGradient={w.coverGradient}
-                  logo={w.logo}
-                  logoColor={w.logoColor}
-                  year={w.year}
-                  portrait={w.portrait}
-                />
+          <div className={`works-grid-new ${hoveredId ? 'has-hovered' : ''}`}>
+            {columns.map((column, colIdx) => (
+              <div key={colIdx} className="works-column">
+                {column.map((w) => {
+                  // Find sequential display index in current filtered list
+                  const itemIndex = filtered.findIndex((item) => item.id === w.id)
+                  const displayNum = (itemIndex + 1).toString().padStart(2, '0')
+                  const isVisible = visible.includes(w.id)
+                  
+                  // Extract clean short title (e.g. "eduapps" instead of "eduapps — School ERP")
+                  const cleanTitle = w.title.split('—')[0].split('-')[0].trim()
+                  const isNew = w.year === '2025'
 
-                {/* Body */}
-                <div className="works-card-body">
-                  <div className="works-card-meta-row">
-                    <span className="works-card-industry">{w.industry}</span>
-                    <span className="works-card-year-badge">{w.year}</span>
-                  </div>
-                  <h3 className="works-card-title">{w.title}</h3>
-                  <p className="works-card-summary">{w.summary}</p>
-                  <div className="works-card-stack">
-                    {w.stack.slice(0, 4).map((s) => <span key={s}>{s}</span>)}
-                  </div>
-                  {w.link && (
-                    <a href={w.link} target="_blank" rel="noopener noreferrer" className="works-card-cta">
-                      View project <i className="fas fa-arrow-right" />
-                    </a>
-                  )}
-                </div>
+                  return (
+                    <Link
+                      key={w.id}
+                      href={w.id === 'credvisor' ? '/works/credvisor' : '#'}
+                      onClick={(e) => { if (w.id !== 'credvisor') e.preventDefault(); }}
+                      className={`works-card-new ${isVisible ? 'visible' : ''} ${hoveredId === w.id ? 'focused' : ''} ${hoveredId && hoveredId !== w.id ? 'dimmed' : ''}`}
+                      onMouseEnter={() => setHoveredId(w.id)}
+                      onMouseLeave={() => setHoveredId(null)}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      {/* Title above Card Image */}
+                      <div className="works-card-header">
+                        <h3 className="works-card-title">
+                          {cleanTitle} {isNew && <span className="works-new-tag">New</span>}
+                        </h3>
+                      </div>
+
+                      {/* Card Image Wrapper with Hover Snippet Overlay */}
+                      <div className="works-card-image-wrap">
+                        <WorksSlideshow
+                          slides={w.slides}
+                          fallbackGradient={w.coverGradient}
+                          logo={w.logo}
+                          logoColor={w.logoColor}
+                          year={w.year}
+                          portrait={w.portrait}
+                        />
+
+                        {/* Hover Overlay snippet of info */}
+                        <div className="works-card-hover-overlay">
+                          <p className="works-hover-summary">{w.summary}</p>
+                          <div className="works-hover-stack">
+                            {w.stack.slice(0, 4).map((s) => (
+                              <span key={s}>{s}</span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Footer with Divider line, number and tags */}
+                      <div className="works-card-footer">
+                        <div className="works-card-line" />
+                        <div className="works-card-meta">
+                          <span className="works-card-num">{displayNum}</span>
+                          <span className="works-card-tags">{w.category}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  )
+                })}
               </div>
             ))}
           </div>

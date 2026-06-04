@@ -88,21 +88,21 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ─── 3. Giant Branding Overlay Text ─── */}
-        <div className="giant-branding-container" ref={containerRef}>
-          <div className={`giant-brand-text ${visible ? 'visible' : ''}`}>
-            {'addonshareware'.split('').map((char, index) => (
-              <span key={index} className="char-wrapper">
-                <span className="char-inner" style={{ transitionDelay: `${index * 0.035}s` }}>
-                  {char}
-                </span>
-              </span>
-            ))}
-          </div>
-        </div>
-
         {/* ─── 4. Copyright & Social Bottom Bar ─── */}
         <div className="container footer-bottom-inner">
+          {/* ─── 3. Giant Branding Overlay Text ─── */}
+          <div className="giant-branding-container" ref={containerRef}>
+            <div className={`giant-brand-text ${visible ? 'visible' : ''}`}>
+              {'addonshareware'.split('').map((char, index) => (
+                <span key={index} className="char-wrapper">
+                  <span className="char-inner" style={{ transitionDelay: `${index * 0.035}s` }}>
+                    {char}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+
           <div className="footer-legal-links">
             <a href="#privacy" onClick={(e) => e.preventDefault()}>Privacy Policy</a>
             <a href="#terms" onClick={(e) => e.preventDefault()}>Terms of Use</a>

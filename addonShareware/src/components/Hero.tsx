@@ -1,8 +1,41 @@
 'use client'
 
-import Image from 'next/image'
+import { useState, useEffect } from 'react'
 
 export default function Hero() {
+  const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0) // 0: Blank, 1: Drawing Logo, 2: Revealing Page, 3: Staggering Content, 4: Done
+
+  useEffect(() => {
+    // Prevent scrolling while preloading
+    if (stage < 4) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }, [stage])
+
+  useEffect(() => {
+    // Stage 1: Blank to Logo Drawing (after 50ms)
+    const t1 = setTimeout(() => setStage(1), 50)
+
+    // Stage 2: Logo Drawing to Revealing Page (after 1450ms)
+    const t2 = setTimeout(() => setStage(2), 1450)
+
+    // Stage 3: Revealing to Content Entrance (after 2150ms)
+    const t3 = setTimeout(() => setStage(3), 2150)
+
+    // Stage 4: Animation completely finished (remove preloader)
+    const t4 = setTimeout(() => setStage(4), 3150)
+
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+      clearTimeout(t3)
+      clearTimeout(t4)
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   const smoothTo = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault()
     const el = document.querySelector(id)
@@ -10,69 +43,69 @@ export default function Hero() {
   }
 
   return (
-    <section className="hero" id="home">
-      <div className="hero-bg-dots" />
-      <div className="hero-orb hero-orb-1" />
-      <div className="hero-orb hero-orb-2" />
+    <>
+      {/* ── PRELOADER OVERLAY (Stage 0 to 3) ── */}
+      {stage < 4 && (
+        <div className={`hero-preloader-overlay stage-${stage}`}>
+          {/* We keep the overlay background styling purely in CSS */}
+        </div>
+      )}
 
-      <div className="hero-inner">
+      {/* ── HERO SECTION ── */}
+      <section className={`hero-new stage-${stage}`} id="home">
+        <div className="hero-bg-dots" />
+        <div className="hero-orb hero-orb-1" />
+        <div className="hero-orb hero-orb-2" />
 
-        {/* ── Left: Agency Card ── */}
-        <div className="hero-sidebar hero-anim-1">
-          <div className="agency-card">
-            <div className="agency-avatar">
-              <Image 
-                src="/logo.png" 
-                alt="addonSHAREWARE logo" 
-                width={170} 
-                height={90} 
-                className="agency-logo-img" 
-                priority
-              />
+        {/* Decorative background stars */}
+        <div className="hero-decor-star star-1"><i className="fas fa-plus" /></div>
+        <div className="hero-decor-star star-2"><i className="fas fa-plus" /></div>
+        <div className="hero-decor-star star-3"><i className="fas fa-plus" /></div>
+
+        {/* Seamlessly transitioning brand image mark */}
+        <img 
+          src="/hero-logo.png" 
+          alt="Addon Shareware Monogram" 
+          className={`hero-monogram-img stage-${stage}`} 
+        />
+
+        <div className="container hero-new-inner">
+          <div className="hero-new-content">
+            
+            {/* Subtitle */}
+            <p className="hero-new-subtitle">
+              WE ARE ADDON SHAREWARE
+            </p>
+
+            {/* Main Headline */}
+            <h1 className="hero-new-title">
+              A software agency<br />
+              focused on <strong>digital scale.</strong>
+            </h1>
+
+            {/* Description */}
+            <p className="hero-new-desc">
+              We are a dedicated team of engineers, architects, and designers building 
+              high-performance custom software, school management ERPs, and elevated digital products.
+            </p>
+
+            {/* CTA Button */}
+            <div className="hero-new-cta">
+              <a href="#services" className="hero-pill-btn" onClick={(e) => smoothTo(e, '#services')}>
+                GET TO KNOW US <span className="btn-plus">+</span>
+              </a>
             </div>
-            <div className="agency-divider" />
-            <div className="agency-meta">
-              <span className="agency-tagline">Software &amp; Digital Agency</span>
-              <span className="agency-location"><i className="fas fa-map-marker-alt" /> Noida &middot; Delhi NCR, India</span>
-            </div>
-            <div className="agency-stat-row">
-              <div className="agency-stat"><span className="agency-stat-num">100+</span><span className="agency-stat-label">Projects</span></div>
-              <div className="agency-stat"><span className="agency-stat-num">50+</span><span className="agency-stat-label">Clients</span></div>
-              <div className="agency-stat"><span className="agency-stat-num">8+</span><span className="agency-stat-label">Years</span></div>
-            </div>
-            <div className="agency-divider" />
-            <div className="agency-socials">
-              <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="Twitter"><i className="fab fa-twitter" /></a>
-              <a href="https://www.instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram"><i className="fab fa-instagram" /></a>
-              <a href="https://www.linkedin.com/company/addon-shareware-pvt-ltd" target="_blank" rel="noreferrer" aria-label="LinkedIn"><i className="fab fa-linkedin" /></a>
-            </div>
+
           </div>
         </div>
 
-        {/* ── Right: Headline ── */}
-        <div className="hero-content">
-          <div className="available-badge hero-anim-2">
-            <span className="dot" /> Available for new projects
-          </div>
-          <h1 className="hero-headline hero-anim-3">
-            Hi! We&apos;re{' '}
-            <span className="pill-light">
-              <span className="logo-addon">addon</span><span className="logo-shareware">SHAREWARE</span><span className="logo-dot">.</span>
-            </span><br />
-            a <span className="pill-dark">Software Agency</span><br />
-            building high performance<br />
-            digital products &mdash; from<br />
-            <strong>strategy to <span className="accent-word">interface.</span></strong>
-          </h1>
-        </div>
-
-      </div>
-
-      <a href="#services" className="scroll-indicator" onClick={(e) => smoothTo(e, '#services')}>
-        <span className="scroll-label">scroll</span>
-        <div className="scroll-track"><div className="scroll-thumb" /></div>
-        <i className="fas fa-chevron-down scroll-chevron" />
-      </a>
-    </section>
+        {/* Scroll Indicator */}
+        <a href="#services" className="scroll-indicator-new" onClick={(e) => smoothTo(e, '#services')}>
+          <span className="scroll-label">scroll</span>
+          <div className="scroll-track"><div className="scroll-thumb" /></div>
+          <i className="fas fa-chevron-down scroll-chevron" />
+        </a>
+      </section>
+    </>
   )
 }

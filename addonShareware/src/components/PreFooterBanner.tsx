@@ -24,7 +24,7 @@ export default function PreFooterBanner() {
               </defs>
               <text fill="currentColor" fontSize="8" fontWeight="600" letterSpacing="1.2">
                 <textPath href="#textCirclePath" startOffset="0%">
-                  • NEW ERA OF SOFTWARE • WEB &amp; APP DEV • ENTERPRISE SOLUTIONS •
+                  • NEW ERA OF DEVELOPMENT • WEB&amp;APP DEV • 
                 </textPath>
               </text>
             </svg>
