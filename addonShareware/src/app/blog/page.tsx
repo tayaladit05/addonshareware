@@ -57,11 +57,11 @@ export default function BlogPage() {
           <div className="grid-bg-dark" />
           <div className="container works-header-inner">
             <div className="works-hero-text">
-              <p className="section-label">Our Journal</p>
-              <h1 className="works-big-title">
+              <p className="section-label hero-anim-1">Our Journal</p>
+              <h1 className="works-big-title hero-anim-2">
                 Blog &amp;<br /><strong>Insights</strong>
               </h1>
-              <p className="section-sub light" style={{ margin: '0' }}>
+              <p className="section-sub light hero-anim-3" style={{ margin: '0' }}>
                 Technical articles, design breakdowns, and insights on scale and modern engineering.
               </p>
             </div>
@@ -72,8 +72,8 @@ export default function BlogPage() {
         <section className="works-grid-section" style={{ padding: '80px 0' }}>
           <div className="container">
             <div className="works-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))' }}>
-              {posts.map((post) => (
-                <div key={post.id} className="works-card visible">
+              {posts.map((post, index) => (
+                <div key={post.id} className="works-card anim-card" data-delay={`${index * 120}`}>
                   <div 
                     className="works-card-cover" 
                     style={{ 

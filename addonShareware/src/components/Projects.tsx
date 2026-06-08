@@ -65,14 +65,11 @@ const projects: Project[] = [
 export default function Projects() {
   const [hoveredProject, setHoveredProject] = useState<Project | null>(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return
-    const rect = containerRef.current.getBoundingClientRect()
     setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
+      x: e.clientX,
+      y: e.clientY,
     })
   }
 
@@ -82,16 +79,20 @@ export default function Projects() {
         
         {/* Header */}
         <div className="projects-section-header">
-          <p className="projects-section-label">[06] PORTFOLIO / LATEST WORK</p>
+          <p className="projects-section-label"> PORTFOLIO / LATEST WORK</p>
           <h2 className="projects-main-title">
             What we&apos;ve <span className="title-accent-italic">built.</span>
           </h2>
         </div>
 
+        <div className="projects-hover-hint" aria-label="Hover to preview projects">
+          <span className="projects-hover-hint-dot" aria-hidden="true" />
+          <span>Hover a project to preview it</span>
+        </div>
+
         {/* Stacked Row List */}
         <div
           className="projects-list-container"
-          ref={containerRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setHoveredProject(null)}
         >
@@ -104,7 +105,13 @@ export default function Projects() {
               target="_blank"
               rel="noopener noreferrer"
               className="project-list-row"
-              onMouseEnter={() => setHoveredProject(p)}
+              onMouseEnter={(e) => {
+                setHoveredProject(p)
+                setMousePos({
+                  x: e.clientX,
+                  y: e.clientY,
+                })
+              }}
             >
               <div className="project-row-left">
                 <span className="project-row-num">{p.num}</span>

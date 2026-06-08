@@ -223,17 +223,17 @@ export default function WorksClient() {
         <div className="grid-bg-dark" />
         <div className="container works-header-inner">
           <div className="works-hero-text">
-            <p className="section-label">Our portfolio</p>
-            <h1 className="works-big-title">
+            <p className="section-label hero-anim-1">Our portfolio</p>
+            <h1 className="works-big-title hero-anim-2">
               Work &amp;<br /><strong>Case Studies</strong>
             </h1>
-            <p className="section-sub light">
+            <p className="section-sub light hero-anim-3">
               Real products built for real businesses — from first concept all the way to launch.
             </p>
           </div>
           <div className="works-header-stat-row">
-            {[['250+', 'Projects'], ['1500+', 'Clients'], ['12+', 'Years']].map(([n, l]) => (
-              <div key={l} className="works-header-stat">
+            {[['250+', 'Projects'], ['1500+', 'Clients'], ['12+', 'Years']].map(([n, l], index) => (
+              <div key={l} className="works-header-stat anim-card" data-delay={`${index * 120}`}>
                 <span className="works-stat-num">{n}</span>
                 <span className="works-stat-label">{l}</span>
               </div>
@@ -245,10 +245,11 @@ export default function WorksClient() {
       {/* Filter bar */}
       <div className="works-filter-bar">
         <div className="container works-filter-inner">
-          {categories.map((c) => (
+          {categories.map((c, index) => (
             <button
               key={c}
-              className={`works-filter-btn${active === c ? ' active' : ''}`}
+              className={`works-filter-btn anim-card${active === c ? ' active' : ''}`}
+              data-delay={`${index * 70}`}
               onClick={() => setActive(c)}
             >
               {c}

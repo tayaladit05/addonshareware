@@ -60,11 +60,11 @@ export default function TeamPage() {
           <div className="grid-bg-dark" />
           <div className="container works-header-inner">
             <div className="works-hero-text">
-              <p className="section-label">Team Members</p>
-              <h1 className="works-big-title">
+              <p className="section-label hero-anim-1">Team Members</p>
+              <h1 className="works-big-title hero-anim-2">
                 Meet the<br /><strong>Engineers</strong>
               </h1>
-              <p className="section-sub light" style={{ margin: '0' }}>
+              <p className="section-sub light hero-anim-3" style={{ margin: '0' }}>
                 A multidisciplinary team focused on precision, transparency, and product excellence.
               </p>
             </div>
@@ -75,8 +75,8 @@ export default function TeamPage() {
         <section className="works-grid-section" style={{ padding: '80px 0' }}>
           <div className="container">
             <div className="works-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
-              {team.map((member) => (
-                <div key={member.name} className="works-card visible">
+              {team.map((member, index) => (
+                <div key={member.name} className="works-card anim-card" data-delay={`${index * 120}`}>
                   <div className="works-card-cover" style={{ background: member.gradient, height: '160px' }}>
                     <div 
                       className="works-card-logo" 

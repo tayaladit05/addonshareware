@@ -22,11 +22,11 @@ export default function ServicesPage() {
           <div className="grid-bg-dark" />
           <div className="container works-header-inner">
             <div className="works-hero-text">
-              <p className="section-label">Capabilities</p>
-              <h1 className="works-big-title">
+              <p className="section-label hero-anim-1">Capabilities</p>
+              <h1 className="works-big-title hero-anim-2">
                 What We<br /><strong>Deliver</strong>
               </h1>
-              <p className="section-sub light" style={{ margin: '0' }}>
+              <p className="section-sub light hero-anim-3" style={{ margin: '0' }}>
                 End-to-end engineering from business wireframes to enterprise scale deployments.
               </p>
             </div>
